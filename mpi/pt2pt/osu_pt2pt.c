@@ -22,9 +22,14 @@ MPI_Request recv_request[MAX_REQ_NUM];
 CUcontext cuContext;
 #endif
 
+#ifdef _ENABLE_HSA_
+atmi_mem_place_t gpu; 
+#endif
+
 static char const * benchmark_header = NULL;
 static int benchmark_type;
 struct options_t options;
+
 
 void
 set_header (const char * header)
@@ -55,9 +60,9 @@ usage (char const * name)
 
     printf("options:\n");
 
-    if (CUDA_ENABLED || OPENACC_ENABLED) {
+    if (CUDA_ENABLED || OPENACC_ENABLED || HSA_ENABLED) {
         printf("  -d TYPE       accelerator device buffers can be of TYPE "
-                "`cuda' or `openacc'\n");
+                "`cuda' , `hsa' or `openacc' \n");
     }
 
     printf("  -x ITER       number of warmup iterations to skip before timing"
@@ -109,7 +114,7 @@ process_options (int argc, char *argv[], int type)
     char const * optstring = NULL;
     int c;
     
-    if (CUDA_ENABLED || OPENACC_ENABLED) {
+    if (CUDA_ENABLED || OPENACC_ENABLED || HSA_ENABLED) {
         optstring = (LAT_MT == type) ? "+d:x:i:t:h" : "+d:x:i:h";
     }
 
@@ -149,7 +154,11 @@ process_options (int argc, char *argv[], int type)
     else if (OPENACC_ENABLED) {
         options.accel = openacc;
     }
-    
+    else if (HSA_ENABLED) {
+        options.accel = hsa;
+    }
+
+
     else {
         options.accel = none;
     }
@@ -181,7 +190,12 @@ process_options (int argc, char *argv[], int type)
                     }
                     options.accel = openacc;
                 }
-                
+                else if (0 == strncasecmp(optarg, "hsa", 10)) {
+                    if (!HSA_ENABLED) {
+                        return po_hsa_not_avail;
+                    }
+                    options.accel = hsa;
+                }                
                 else {
                     return po_bad_usage;
                 }
@@ -209,7 +223,7 @@ process_options (int argc, char *argv[], int type)
         }
     }
     
-    if (CUDA_ENABLED || OPENACC_ENABLED) {
+    if (CUDA_ENABLED || OPENACC_ENABLED || HSA_ENABLED) {
         if ((optind + 2) == argc) {
             options.src = argv[optind][0];
             options.dst = argv[optind + 1][0];
@@ -245,7 +259,7 @@ process_options (int argc, char *argv[], int type)
 int
 init_accel (void)
 {
-#if defined(_ENABLE_OPENACC_) || defined(_ENABLE_CUDA_)
+#if defined(_ENABLE_OPENACC_) || defined(_ENABLE_CUDA_) || defined(_ENABLE_HSA_)
      char * str;
      int local_rank, dev_count;
      int dev_id = 0;
@@ -253,6 +267,11 @@ init_accel (void)
 #ifdef _ENABLE_CUDA_
      CUresult curesult = CUDA_SUCCESS;
      CUdevice cuDevice;
+#endif
+
+#ifdef _ENABLE_HSA_
+                atmi_status_t err;
+                atmi_machine_t *machine;
 #endif
 
      switch (options.accel) {
@@ -289,6 +308,19 @@ init_accel (void)
             }
 
             acc_set_device_num (dev_id, acc_device_not_host);
+            break;
+#endif
+#ifdef _ENABLE_HSA_
+        case hsa:
+            if ((str = getenv("LOCAL_RANK")) != NULL) {
+                local_rank = atoi(str);
+            }  {
+                err= atmi_init(ATMI_DEVTYPE_ALL);
+                machine = atmi_machine_get_info();
+	        dev_count =  machine->device_count_by_type[ATMI_DEVTYPE_GPU];
+                dev_id = local_rank % dev_count;
+                gpu.node_id=0; gpu.dev_type=ATMI_DEVTYPE_GPU; gpu.dev_id=dev_id; gpu.mem_id=0; // = ATMI_MEM_PLACE_GPU(0, dev_id);
+               }
             break;
 #endif
         default:
@@ -352,6 +384,14 @@ allocate_device_buffer (char ** buffer)
             }
             break;
 #endif
+#ifdef _ENABLE_HSA_
+        case hsa:
+{
+            atmi_malloc((void**) buffer, MYBUFSIZE, gpu);
+}
+            break;
+#endif
+
         default:
             fprintf(stderr, "Could not allocate device memory\n");
             return 1;
@@ -453,6 +493,9 @@ print_header (int rank, int type)
             case cuda:
                 printf(benchmark_header, "-CUDA");
                 break;
+             case hsa:
+                printf(benchmark_header, "-HSA");
+                break;
             case openacc:
                 printf(benchmark_header, "-OPENACC");
                 break;
@@ -463,6 +506,7 @@ print_header (int rank, int type)
 
         switch (options.accel) {
             case cuda:
+            case hsa:
             case openacc:
                 printf("# Send Buffer on %s and Receive Buffer on %s\n",
                         'M' == options.src ? "MANAGED (M)" : ('D' == options.src ? "DEVICE (D)" : "HOST (H)"),
@@ -491,6 +535,10 @@ set_device_memory (void * ptr, int data, size_t size)
 #ifdef _ENABLE_CUDA_
         case cuda:
             cudaMemset(ptr, data, size);
+            break;
+#endif
+#ifdef _ENABLE_HSA_
+        case hsa:
             break;
 #endif
 #ifdef _ENABLE_OPENACC_
@@ -533,6 +581,13 @@ free_device_buffer (void * buf)
             acc_free(buf);
             break;
 #endif
+#ifdef _ENABLE_HSA_
+        case hsa:
+             atmi_free(buf);
+            break;
+#endif
+
+
         default:
             /* unknown device */
             return 1;
@@ -563,8 +618,14 @@ cleanup_accel (void)
             acc_shutdown(acc_device_not_host);
             break;
 #endif
+#ifdef _ENABLE_HSA_
+        case hsa:
+            atmi_finalize();
+            break;
+#endif
+
         default:
-            fprintf(stderr, "Invalid accel type, should be cuda or openacc\n");
+            fprintf(stderr, "Invalid accel type, should be cuda, openacc or hsa\n");
             return 1;
     }
 

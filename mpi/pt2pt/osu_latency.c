@@ -28,7 +28,6 @@ main (int argc, char *argv[])
     }
 
     set_header(HEADER);
-
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
@@ -53,6 +52,7 @@ main (int argc, char *argv[])
     switch (po_ret) {
         case po_cuda_not_avail:
         case po_openacc_not_avail:
+        case po_hsa_not_avail:
         case po_bad_usage:
             MPI_Finalize();
             exit(EXIT_FAILURE);

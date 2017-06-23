@@ -15,6 +15,14 @@ AC_ARG_ENABLE([openacc],
               [],
               [enable_openacc=no])
 
+AC_ARG_ENABLE([hsa],
+              [AS_HELP_STRING([--enable-hsa],
+                              [Enable HSA benchmarks])
+              ],
+              [],
+              [enable_hsa=no])
+
+
 AC_ARG_ENABLE([cuda],
               [AS_HELP_STRING([--enable-cuda],
 			      [Enable CUDA benchmarks (default is no).  Specify
@@ -34,6 +42,17 @@ AC_ARG_WITH([cuda],
                      [CPPFLAGS="-I$with_cuda/include $CPPFLAGS"
                       LDFLAGS="-L$with_cuda/lib64 -Wl,-rpath=$with_cuda/lib64 -L$with_cuda/lib -Wl,-rpath=$with_cuda/lib $LDFLAGS"])
             ])
+
+AC_ARG_WITH([hsa],
+            [AS_HELP_STRING([--with-atmi=@<:@ATMI installation path@:>@],
+                            [Provide path to ATMI installation])
+            ],
+            [AS_CASE([$with_atmi],
+                     [yes|no], [],
+                     [CPPFLAGS="-I$with_atmi/include $CPPFLAGS"
+                      LDFLAGS="-L$with_atmi/lib -Wl,-rpath=$with_atmi/lib -L$with_atmi/lib -Wl,-rpath=$with_atmi/lib $LDFLAGS"])
+            ])
+
 
 AC_ARG_WITH([cuda-include],
             [AS_HELP_STRING([--with-cuda-include=@<:@CUDA include path@>:@],
@@ -102,6 +121,11 @@ AS_IF([test "x$enable_openacc" = xyes], [
        AC_DEFINE([_ENABLE_OPENACC_], [1], [Enable OpenACC])
        ])
 
+AS_IF([test "x$enable_hsa" = xyes], [
+       AC_DEFINE([_ENABLE_HSA_], [1], [Enable HSA])
+       ])
+
+
 AS_CASE([$enable_cuda],
         [yes], [build_cuda_kernels=yes; build_cuda=yes],
         [basic], [build_cuda=yes])
@@ -125,6 +149,7 @@ AM_CONDITIONAL([MPI3_LIBRARY], [test x$mpi3_library = xtrue])
 AM_CONDITIONAL([CUDA], [test x$build_cuda = xyes])
 AM_CONDITIONAL([CUDA_KERNELS], [test x$build_cuda_kernels = xyes])
 AM_CONDITIONAL([OPENACC], [test x$enable_openacc = xyes])
+AM_CONDITIONAL([HSA], [test x$enable_hsa = xyes])
 AM_CONDITIONAL([OSHM], [test x$oshm_library = xtrue])
 AM_CONDITIONAL([MPI], [test x$mpi_library = xtrue])
 AM_CONDITIONAL([UPC], [test x$upc_compiler = xtrue])

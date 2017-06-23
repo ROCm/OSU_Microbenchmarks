@@ -24,6 +24,12 @@
 #include "cuda_runtime.h"
 #endif
 
+#ifdef _ENABLE_HSA_
+#include "atmi_runtime.h"
+#endif
+
+
+
 #ifndef DEFAULT_MAX_MESSAGE_SIZE
 #define DEFAULT_MAX_MESSAGE_SIZE (1 << 20)
 #endif
@@ -52,6 +58,12 @@
 #   define CUDA_ENABLED 1
 #else
 #   define CUDA_ENABLED 0
+#endif
+
+#ifdef _ENABLE_HSA_
+#   define HSA_ENABLED 1
+#else
+#   define HSA_ENABLED 0
 #endif
 
 #ifdef _ENABLE_CUDA_KERNEL_
@@ -219,6 +231,7 @@ static int process_args (int argc, char *argv[], int rank, int * size,
 enum po_ret_type {
     po_cuda_not_avail,
     po_openacc_not_avail,
+    po_hsa_not_avail,
     po_bad_usage,
     po_help_message,
     po_version_message,
@@ -229,7 +242,8 @@ enum accel_type {
     none,
     cuda,
     openacc,
-    managed
+    managed,
+    hsa
 };
 
 enum target_type {

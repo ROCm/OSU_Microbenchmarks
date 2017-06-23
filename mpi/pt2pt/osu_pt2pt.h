@@ -27,6 +27,12 @@
 #include <openacc.h>
 #endif
 
+#ifdef _ENABLE_HSA_
+#include "atmi_runtime.h"
+#endif
+
+
+
 #ifdef PACKAGE_VERSION
 #   define HEADER "# " BENCHMARK " v" PACKAGE_VERSION "\n"
 #else
@@ -61,6 +67,14 @@
 #   define CUDA_ENABLED 0
 #endif
 
+#ifdef _ENABLE_HSA_
+#   define HSA_ENABLED 1
+#else
+#   define HSA_ENABLED 0
+#endif
+
+
+
 extern MPI_Request request[MAX_REQ_NUM];
 extern MPI_Status  reqstat[MAX_REQ_NUM];
 extern MPI_Request send_request[MAX_REQ_NUM];
@@ -91,6 +105,7 @@ extern CUcontext cuContext;
 enum po_ret_type {
     po_cuda_not_avail,
     po_openacc_not_avail,
+    po_hsa_not_avail,
     po_bad_usage,
     po_help_message,
     po_okay,
@@ -99,7 +114,8 @@ enum po_ret_type {
 enum accel_type {
     none,
     cuda,
-    openacc
+    openacc,
+    hsa
 };
 
 struct options_t {
