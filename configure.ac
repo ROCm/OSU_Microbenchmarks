@@ -43,7 +43,7 @@ AC_ARG_WITH([cuda],
                       LDFLAGS="-L$with_cuda/lib64 -Wl,-rpath=$with_cuda/lib64 -L$with_cuda/lib -Wl,-rpath=$with_cuda/lib $LDFLAGS"])
             ])
 
-AC_ARG_WITH([hsa],
+AC_ARG_WITH([atmi],
             [AS_HELP_STRING([--with-atmi=@<:@ATMI installation path@:>@],
                             [Provide path to ATMI installation])
             ],
