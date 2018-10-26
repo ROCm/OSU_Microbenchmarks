@@ -15,12 +15,12 @@ AC_ARG_ENABLE([openacc],
               [],
               [enable_openacc=no])
 
-AC_ARG_ENABLE([hsa],
-              [AS_HELP_STRING([--enable-hsa],
-                              [Enable HSA benchmarks])
+AC_ARG_ENABLE([rocm],
+              [AS_HELP_STRING([--enable-rocm],
+                              [Enable ROCM benchmarks])
               ],
               [],
-              [enable_hsa=no])
+              [enable_rocm=no])
 
 
 AC_ARG_ENABLE([cuda],
@@ -43,14 +43,14 @@ AC_ARG_WITH([cuda],
                       LDFLAGS="-L$with_cuda/lib64 -Wl,-rpath=$with_cuda/lib64 -L$with_cuda/lib -Wl,-rpath=$with_cuda/lib $LDFLAGS"])
             ])
 
-AC_ARG_WITH([atmi],
-            [AS_HELP_STRING([--with-atmi=@<:@ATMI installation path@:>@],
-                            [Provide path to ATMI installation])
+AC_ARG_WITH([rocm],
+            [AS_HELP_STRING([--with-rocm=@<:@ROCM installation path@:>@],
+                            [Provide path to ROCM installation])
             ],
-            [AS_CASE([$with_atmi],
+            [AS_CASE([$with_rocm],
                      [yes|no], [],
-                     [CPPFLAGS="-I$with_atmi/include $CPPFLAGS"
-                      LDFLAGS="-L$with_atmi/lib -Wl,-rpath=$with_atmi/lib -L$with_atmi/lib -Wl,-rpath=$with_atmi/lib $LDFLAGS"])
+                     [CPPFLAGS="-I$with_rocm/include $CPPFLAGS"
+                      LDFLAGS="-L$with_rocm/lib -Wl,-rpath=$with_rocm/lib -L$with_rocm/lib -Wl,-rpath=$with_rocm/lib $LDFLAGS"])
             ])
 
 
@@ -121,8 +121,8 @@ AS_IF([test "x$enable_openacc" = xyes], [
        AC_DEFINE([_ENABLE_OPENACC_], [1], [Enable OpenACC])
        ])
 
-AS_IF([test "x$enable_hsa" = xyes], [
-       AC_DEFINE([_ENABLE_HSA_], [1], [Enable HSA])
+AS_IF([test "x$enable_rocm" = xyes], [
+       AC_DEFINE([_ENABLE_ROCM_], [1], [Enable ROCM])
        ])
 
 
@@ -149,7 +149,7 @@ AM_CONDITIONAL([MPI3_LIBRARY], [test x$mpi3_library = xtrue])
 AM_CONDITIONAL([CUDA], [test x$build_cuda = xyes])
 AM_CONDITIONAL([CUDA_KERNELS], [test x$build_cuda_kernels = xyes])
 AM_CONDITIONAL([OPENACC], [test x$enable_openacc = xyes])
-AM_CONDITIONAL([HSA], [test x$enable_hsa = xyes])
+AM_CONDITIONAL([ROCM], [test x$enable_rocm = xyes])
 AM_CONDITIONAL([OSHM], [test x$oshm_library = xtrue])
 AM_CONDITIONAL([MPI], [test x$mpi_library = xtrue])
 AM_CONDITIONAL([UPC], [test x$upc_compiler = xtrue])

@@ -27,16 +27,17 @@
 #include <openacc.h>
 #endif
 
-#ifdef _ENABLE_HSA_
-#include "atmi_runtime.h"
+#ifdef _ENABLE_ROCM_
+#define  __HIP_PLATFORM_HCC__
+#include "hip/hip_runtime.h"
 #endif
 
 
 
 #ifdef PACKAGE_VERSION
-#   define HEADER "# " BENCHMARK " v" PACKAGE_VERSION "\n"
+#    define HEADER "# " BENCHMARK " v" PACKAGE_VERSION "\n"
 #else
-#   define HEADER "# " BENCHMARK "\n"
+#    define HEADER "# " BENCHMARK "\n"
 #endif
 
 #ifndef FIELD_WIDTH
@@ -67,10 +68,10 @@
 #   define CUDA_ENABLED 0
 #endif
 
-#ifdef _ENABLE_HSA_
-#   define HSA_ENABLED 1
+#ifdef _ENABLE_ROCM_
+#   define ROCM_ENABLED 1
 #else
-#   define HSA_ENABLED 0
+#   define ROCM_ENABLED 0
 #endif
 
 
@@ -105,7 +106,7 @@ extern CUcontext cuContext;
 enum po_ret_type {
     po_cuda_not_avail,
     po_openacc_not_avail,
-    po_hsa_not_avail,
+    po_rocm_not_avail,
     po_bad_usage,
     po_help_message,
     po_okay,
@@ -115,7 +116,7 @@ enum accel_type {
     none,
     cuda,
     openacc,
-    hsa
+    rocm
 };
 
 struct options_t {
