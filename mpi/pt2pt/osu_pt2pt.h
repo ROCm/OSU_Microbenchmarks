@@ -50,11 +50,11 @@
 
 #define MAX_REQ_NUM 1000
 
-#define MAX_MSG_SIZE (1<<22)
+#define MAX_MSG_SIZE (1<<28)
 #define MYBUFSIZE (MAX_MSG_SIZE)
 
 #define WINDOW_SIZE_LARGE  64
-#define LARGE_MESSAGE_SIZE  8192
+#define LARGE_MESSAGE_SIZE  (1<<25)
 
 #ifdef _ENABLE_OPENACC_
 #   define OPENACC_ENABLED 1
@@ -122,6 +122,8 @@ enum accel_type {
 struct options_t {
     char src;
     char dst;
+    int srcgid;
+    int dstgid;
     enum accel_type accel;
     int loop;
     int loop_large;

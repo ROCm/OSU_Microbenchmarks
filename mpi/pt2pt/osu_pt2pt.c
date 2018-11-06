@@ -247,7 +247,30 @@ process_options (int argc, char *argv[], int type)
                     return po_bad_usage;
             }
         }
-        
+        else if ((optind + 4) == argc) {
+            options.src = argv[optind][0];
+            options.dst = argv[optind + 1][0];
+            options.srcgid = atoi(argv[optind+2]);//set the src gpu id
+            options.dstgid = atoi(argv[optind+3]);//set the dst gpu id
+
+            switch (options.src) {
+                case 'D':
+                case 'H':
+                case 'M':
+                    break;
+                default:
+                    return po_bad_usage;
+            }
+
+            switch (options.dst) {
+                case 'D':
+                case 'H':
+                case 'M':
+                    break;
+                default:
+                    return po_bad_usage;
+            }
+        }
         else if (optind != argc) {
             return po_bad_usage;
         }
