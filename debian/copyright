@@ -1,0 +1,356 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: osu-micro-benchmarks
+Source: <url://example.com>
+
+Files:     .gitignore
+           CHANGES
+           Makefile.am
+           README
+           autom4te.cache/requests
+           autom4te.cache/traces.1
+           configure.ac
+           get_local_rank
+           mpi/Makefile.am
+           mpi/collective/.deps/kernel.Po
+           mpi/collective/.deps/osu_allgather.Po
+           mpi/collective/.deps/osu_allgatherv.Po
+           mpi/collective/.deps/osu_allreduce.Po
+           mpi/collective/.deps/osu_alltoall.Po
+           mpi/collective/.deps/osu_alltoallv.Po
+           mpi/collective/.deps/osu_barrier.Po
+           mpi/collective/.deps/osu_bcast.Po
+           mpi/collective/.deps/osu_coll.Po
+           mpi/collective/.deps/osu_gather.Po
+           mpi/collective/.deps/osu_gatherv.Po
+           mpi/collective/.deps/osu_iallgather.Po
+           mpi/collective/.deps/osu_iallgatherv.Po
+           mpi/collective/.deps/osu_ialltoall.Po
+           mpi/collective/.deps/osu_ialltoallv.Po
+           mpi/collective/.deps/osu_ialltoallw.Po
+           mpi/collective/.deps/osu_ibarrier.Po
+           mpi/collective/.deps/osu_ibcast.Po
+           mpi/collective/.deps/osu_igather.Po
+           mpi/collective/.deps/osu_igatherv.Po
+           mpi/collective/.deps/osu_iscatter.Po
+           mpi/collective/.deps/osu_iscatterv.Po
+           mpi/collective/.deps/osu_reduce.Po
+           mpi/collective/.deps/osu_reduce_scatter.Po
+           mpi/collective/.deps/osu_scatter.Po
+           mpi/collective/.deps/osu_scatterv.Po
+           mpi/collective/Makefile.am
+           mpi/one-sided/.deps/osu_1sc.Po
+           mpi/one-sided/.deps/osu_acc_latency.Po
+           mpi/one-sided/.deps/osu_cas_latency.Po
+           mpi/one-sided/.deps/osu_fop_latency.Po
+           mpi/one-sided/.deps/osu_get_acc_latency.Po
+           mpi/one-sided/.deps/osu_get_bw.Po
+           mpi/one-sided/.deps/osu_get_latency.Po
+           mpi/one-sided/.deps/osu_put_bibw.Po
+           mpi/one-sided/.deps/osu_put_bw.Po
+           mpi/one-sided/.deps/osu_put_latency.Po
+           mpi/one-sided/Makefile.am
+           mpi/pt2pt/.deps/osu_bibw.Po
+           mpi/pt2pt/.deps/osu_bw.Po
+           mpi/pt2pt/.deps/osu_latency.Po
+           mpi/pt2pt/.deps/osu_latency_mt.Po
+           mpi/pt2pt/.deps/osu_mbw_mr.Po
+           mpi/pt2pt/.deps/osu_multi_lat.Po
+           mpi/pt2pt/.deps/osu_pt2pt.Po
+           mpi/pt2pt/Makefile.am
+           mpi/startup/.deps/osu_hello.Po
+           mpi/startup/.deps/osu_init.Po
+           mpi/startup/Makefile.am
+           openshmem/.deps/osu_coll.Po
+           openshmem/.deps/osu_common.Po
+           openshmem/.deps/osu_oshm_atomics.Po
+           openshmem/.deps/osu_oshm_barrier.Po
+           openshmem/.deps/osu_oshm_broadcast.Po
+           openshmem/.deps/osu_oshm_collect.Po
+           openshmem/.deps/osu_oshm_fcollect.Po
+           openshmem/.deps/osu_oshm_get.Po
+           openshmem/.deps/osu_oshm_put.Po
+           openshmem/.deps/osu_oshm_put_mr.Po
+           openshmem/.deps/osu_oshm_reduce.Po
+           openshmem/Makefile.am
+           upc/.deps/osu_coll.Po
+           upc/.deps/osu_common.Po
+           upc/.deps/osu_upc_all_barrier.Po
+           upc/.deps/osu_upc_all_broadcast.Po
+           upc/.deps/osu_upc_all_exchange.Po
+           upc/.deps/osu_upc_all_gather.Po
+           upc/.deps/osu_upc_all_gather_all.Po
+           upc/.deps/osu_upc_all_reduce.Po
+           upc/.deps/osu_upc_all_scatter.Po
+           upc/.deps/osu_upc_memget.Po
+           upc/.deps/osu_upc_memput.Po
+           upc/Makefile.am
+           upcxx/.deps/osu_coll.Po
+           upcxx/.deps/osu_common.Po
+           upcxx/.deps/osu_upcxx_allgather.Po
+           upcxx/.deps/osu_upcxx_alltoall.Po
+           upcxx/.deps/osu_upcxx_async_copy_get.Po
+           upcxx/.deps/osu_upcxx_async_copy_put.Po
+           upcxx/.deps/osu_upcxx_bcast.Po
+           upcxx/.deps/osu_upcxx_gather.Po
+           upcxx/.deps/osu_upcxx_reduce.Po
+           upcxx/.deps/osu_upcxx_scatter.Po
+           upcxx/Makefile.am
+Copyright: __NO_COPYRIGHT_NOR_LICENSE__
+License:   __UNKNOWN__
+
+Files:     mpi/collective/kernel.cu
+           mpi/collective/osu_allgather.c
+           mpi/collective/osu_allgatherv.c
+           mpi/collective/osu_allreduce.c
+           mpi/collective/osu_alltoall.c
+           mpi/collective/osu_alltoallv.c
+           mpi/collective/osu_barrier.c
+           mpi/collective/osu_bcast.c
+           mpi/collective/osu_coll.h
+           mpi/collective/osu_gather.c
+           mpi/collective/osu_gatherv.c
+           mpi/collective/osu_iallgather.c
+           mpi/collective/osu_iallgatherv.c
+           mpi/collective/osu_ialltoall.c
+           mpi/collective/osu_ialltoallv.c
+           mpi/collective/osu_ialltoallw.c
+           mpi/collective/osu_ibarrier.c
+           mpi/collective/osu_ibcast.c
+           mpi/collective/osu_igather.c
+           mpi/collective/osu_igatherv.c
+           mpi/collective/osu_iscatter.c
+           mpi/collective/osu_iscatterv.c
+           mpi/collective/osu_reduce.c
+           mpi/collective/osu_reduce_scatter.c
+           mpi/collective/osu_scatter.c
+           mpi/collective/osu_scatterv.c
+           mpi/one-sided/osu_1sc.c
+           mpi/one-sided/osu_1sc.h
+           mpi/one-sided/osu_acc_latency.c
+           mpi/one-sided/osu_cas_latency.c
+           mpi/one-sided/osu_fop_latency.c
+           mpi/one-sided/osu_get_acc_latency.c
+           mpi/one-sided/osu_get_bw.c
+           mpi/one-sided/osu_get_latency.c
+           mpi/one-sided/osu_put_bibw.c
+           mpi/one-sided/osu_put_bw.c
+           mpi/one-sided/osu_put_latency.c
+           mpi/pt2pt/osu_bibw.c
+           mpi/pt2pt/osu_bw.c
+           mpi/pt2pt/osu_latency.c
+           mpi/pt2pt/osu_latency_mt.c
+           mpi/pt2pt/osu_mbw_mr.c
+           mpi/pt2pt/osu_multi_lat.c
+           mpi/pt2pt/osu_pt2pt.h
+           mpi/startup/osu_hello.c
+           mpi/startup/osu_init.c
+           openshmem/osu_coll.h
+           openshmem/osu_common.c
+           openshmem/osu_common.h
+           openshmem/osu_oshm_atomics.c
+           openshmem/osu_oshm_barrier.c
+           openshmem/osu_oshm_broadcast.c
+           openshmem/osu_oshm_get.c
+           openshmem/osu_oshm_put.c
+           openshmem/osu_oshm_put_mr.c
+           upc/osu_coll.h
+           upc/osu_common.c
+           upc/osu_common.h
+           upc/osu_upc_all_barrier.c
+           upc/osu_upc_all_broadcast.c
+           upc/osu_upc_all_exchange.c
+           upc/osu_upc_all_gather.c
+           upc/osu_upc_all_gather_all.c
+           upc/osu_upc_all_reduce.c
+           upc/osu_upc_all_scatter.c
+           upc/osu_upc_memget.c
+           upc/osu_upc_memput.c
+           upcxx/osu_coll.h
+           upcxx/osu_common.c
+           upcxx/osu_common.h
+           upcxx/osu_upcxx_allgather.cpp
+           upcxx/osu_upcxx_alltoall.cpp
+           upcxx/osu_upcxx_async_copy_get.cpp
+           upcxx/osu_upcxx_async_copy_put.cpp
+           upcxx/osu_upcxx_bcast.cpp
+           upcxx/osu_upcxx_gather.cpp
+           upcxx/osu_upcxx_reduce.cpp
+           upcxx/osu_upcxx_scatter.cpp
+Copyright: 2002-2016 the Network-Based Computing Laboratory (NBCL), The Ohio State University.
+License:   __UNKNOWN__
+ Contact: Dr. D. K. Panda (panda@cse.ohio-state.edu)
+ .
+ For detailed copyright and licensing information, please refer to the
+ copyright file COPYRIGHT in the top level OMB directory.
+
+Files:     Makefile.in
+           aclocal.m4
+           compile
+           config.guess
+           config.sub
+           configure
+           depcomp
+           install-sh
+           libtool
+           ltmain.sh
+           missing
+           mpi/Makefile.in
+           mpi/collective/Makefile.in
+           mpi/one-sided/Makefile.in
+           mpi/pt2pt/Makefile.in
+           mpi/startup/Makefile.in
+           openshmem/Makefile.in
+           upc/Makefile.in
+           upcxx/Makefile.in
+Copyright: 1992-2015 Free Software Foundation, Inc.
+           1994 X Consortium
+License:   __AUTO_PERMISSIVE__
+ Auto-generated file under the permissive license.
+
+Files:     Makefile
+           mpi/Makefile
+           mpi/collective/Makefile
+           mpi/one-sided/Makefile
+           mpi/pt2pt/Makefile
+           mpi/startup/Makefile
+           openshmem/Makefile
+           upc/Makefile
+           upcxx/Makefile
+Copyright: 1994-2014 Free Software Foundation, Inc.
+License:   PERMISSIVE
+ This Makefile.in is free software; the Free Software Foundation
+ gives unlimited permission to copy and/or distribute it,
+ with or without modifications, as long as this notice is preserved.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+ even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ PARTICULAR PURPOSE.
+
+Files:     mpi/collective/osu_coll.c
+           mpi/pt2pt/osu_pt2pt.c
+           openshmem/osu_coll.c
+           upc/osu_coll.c
+           upcxx/osu_coll.c
+Copyright: 2002-2016 the Network-Based Computing Laboratory (NBCL), The Ohio State University.
+License:   __UNKNOWN__
+ Contact: Dr. D. K. Panda (panda@cse.ohio-state.edu)
+ .
+ For detailed copyright and licensing information, please refer to the
+ copyright file COPYRIGHT in the top level directory.
+ .
+ .
+ .
+ HEADER FILES
+
+Files:     openshmem/osu_oshm_collect.c
+           openshmem/osu_oshm_fcollect.c
+           openshmem/osu_oshm_reduce.c
+Copyright: 2002-2016 the Network-Based Computing Laboratory (NBCL), The Ohio State University.
+License:   __UNKNOWN__
+ Contact: Dr. D. K. Panda (panda@cse.ohio-state.edu)
+ .
+ .
+ .
+ This program is available under BSD licensing.
+ .
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+ .
+ (1) Redistributions of source code must retain the above copyright
+ notice, this list of conditions and the following disclaimer.
+ .
+ (2) Redistributions in binary form must reproduce the above copyright
+ notice, this list of conditions and the following disclaimer in the
+ documentation and/or other materials provided with the distribution.
+ .
+ (3) Neither the name of The Ohio State University nor the names of
+ their contributors may be used to endorse or promote products derived
+ from this software without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Files:     autom4te.cache/output.0
+           autom4te.cache/output.1
+Copyright: 1992-2012 Free Software Foundation, Inc.
+License:   PERMISSIVE
+ This configure script is free software; the Free Software Foundation
+ gives unlimited permission to copy, distribute and modify it.
+
+Files:     config.log
+Copyright: 2015 Free Software Foundation, Inc.
+License:   __UNKNOWN__
+ This is free software; see the source for copying conditions.  There is NO
+ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Files:     config.status
+Copyright: 2012 Free Software Foundation, Inc.
+License:   __UNKNOWN__
+ This config.status script is free software; the Free Software Foundation
+ gives unlimited permission to copy, distribute and modify it."
+
+Files:     autom4te.cache/traces.0
+Copyright: 2011 Free Software Foundation, Inc.
+License:   __UNKNOWN__
+ This config.lt script is free software; the Free Software Foundation
+ gives unlimited permision to copy, distribute and modify it."
+
+Files:     COPYRIGHT
+Copyright: 2001-2016 The Ohio State University.
+License:   __UNKNOWN__
+ The OMB (OSU Micro Benchmarks) software package is developed by the team
+ members of The Ohio State University's Network-Based Computing Laboratory
+ (NBCL), headed by Professor Dhabaleswar K. (DK) Panda.
+ .
+ Contact:
+ Prof. Dhabaleswar K. (DK) Panda
+ Dept. of Computer Science and Engineering
+ The Ohio State University
+ 2015 Neil Avenue
+ Columbus, OH - 43210-1277
+ Tel: (614)-292-5199; Fax: (614)-292-2911
+ E-mail:panda@cse.ohio-state.edu
+ .
+ This program is available under BSD licensing.
+ .
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+ .
+ (1) Redistributions of source code must retain the above copyright
+ notice, this list of conditions and the following disclaimer.
+ .
+ (2) Redistributions in binary form must reproduce the above copyright
+ notice, this list of conditions and the following disclaimer in the
+ documentation and/or other materials provided with the distribution.
+ .
+ (3) Neither the name of The Ohio State University nor the names of
+ their contributors may be used to endorse or promote products derived
+ from this software without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+#----------------------------------------------------------------------------
+# Files marked as NO_LICENSE_TEXT_FOUND may be covered by the following
+# license/copyright files.
