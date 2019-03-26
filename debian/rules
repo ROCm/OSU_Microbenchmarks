@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+# You must remove unused comment lines for the released package.
+#export DH_VERBOSE = 1
+#export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+#export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
+#export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+%:
+	dh $@ --with autoreconf
+
+override_dh_auto_configure:
+	./configure CC=/opt/rocm/ompi/bin/mpicc CXX=/opt/rocm/ompi/bin/mpicxx --enable-rocm --with-rocm=/opt/rocm LDFLAGS="-L/opt/rocm/lib -lhip_hcc"
+	autoreconf -fi
+
+override_dh_usrlocal:
+
+override_dh_shlibdeps:
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
+
+#override_dh_install:
+#	dh_install --list-missing -X.la -X.pyc -X.pyo

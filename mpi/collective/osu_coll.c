@@ -24,9 +24,6 @@
 static CUcontext cuContext;
 #endif
 
-#ifdef _ENABLE_HSA_
-atmi_mem_place_t gpu_;
-#endif
 
 
 static int is_alloc = 0;
@@ -258,7 +255,7 @@ set_benchmark_name (const char * name)
 void
 enable_accel_support (void)
 {
-    accel_enabled = (CUDA_ENABLED || OPENACC_ENABLED || HSA_ENABLED);
+    accel_enabled = (CUDA_ENABLED || OPENACC_ENABLED || ROCM_ENABLED);
 }
 
 enum po_ret_type
@@ -392,13 +389,13 @@ process_options (int argc, char *argv[])
                         return po_bad_usage;
                     }
                 }
-                 else if (0 == strncasecmp(optarg, "hsa", 10)) {
-                    if (HSA_ENABLED) {
-                        options.accel = hsa;
+                 else if (0 == strncasecmp(optarg, "rocm", 10)) {
+                    if (ROCM_ENABLED) {
+                        options.accel = rocm;
                     }
                     else {
-                        bad_usage.message = "HSA Support Not Enabled\n"
-                            "Please recompile benchmark with HSA support";
+                        bad_usage.message = "ROCM Support Not Enabled\n"
+                            "Please recompile benchmark with ROCM support";
                         bad_usage.optarg = optarg;
                         return po_bad_usage;
                     }
@@ -472,7 +469,7 @@ print_help_message (int rank)
     if (accel_enabled) {
         printf("  -d TYPE       use accelerator device buffers which can be of TYPE `cuda' or\n");
         printf("                use accelerator managed device buffers which can be of TYPE `managed' or\n");
-        printf("                `openacc' or `hsa'(uses standard host buffers if not specified)\n");
+        printf("                `openacc' or `rocm'(uses standard host buffers if not specified)\n");
     }
 
     if (options.show_size) {
@@ -523,8 +520,8 @@ print_version_message (int rank)
         case openacc:
             printf(benchmark_header, "-OPENACC");
             break;
-        case hsa:
-            printf(benchmark_header, "-HSA");
+        case rocm:
+            printf(benchmark_header, "-ROCM");
             break;
         case managed:
             printf(benchmark_header, "-CUDA MANAGED");
@@ -551,8 +548,8 @@ print_preamble_nbc (int rank)
         case openacc:
             printf(benchmark_header, "-OPENACC");
             break;
-        case hsa:
-            printf(benchmark_header, "-HSA");
+        case rocm:
+            printf(benchmark_header, "-ROCM");
             break;
          case managed:
             printf(benchmark_header, "-MANAGED");
@@ -623,8 +620,8 @@ print_preamble (int rank)
         case openacc:
             printf(benchmark_header, "-OPENACC");
             break;
-        case hsa:
-            printf(benchmark_header, "-HSA");
+        case rocm:
+            printf(benchmark_header, "-ROCM");
             break;
         default:
             printf(benchmark_header, "");
@@ -805,9 +802,9 @@ set_buffer (void * buffer, enum accel_type type, int data, size_t size)
             cudaMemset(buffer, data, size);
 #endif
             break;
-        case hsa:
-#ifdef _ENABLE_HSA_
-           // atmiMemset(buffer, data, size);
+        case rocm:
+#ifdef _ENABLE_ROCM_
+           hipMemset(buffer, data, size);
 #endif
             break;
         case openacc:
@@ -867,10 +864,10 @@ allocate_buffer (void ** buffer, size_t size, enum accel_type type)
                 return 0;
             }
 #endif
-#ifdef _ENABLE_HSA_
-        case hsa:
+#ifdef _ENABLE_ROCM_
+        case rocm:
 {
-            atmi_malloc((void**) buffer, size, gpu_);
+            hipMalloc((void**) buffer, size);
 }
             break;
 #endif
@@ -897,9 +894,9 @@ free_buffer (void * buffer, enum accel_type type)
             acc_free(buffer);
 #endif
             break;
-#ifdef _ENABLE_HSA_
-        case hsa:
-             atmi_free(buffer);
+#ifdef _ENABLE_ROCM_
+        case rocm:
+             hipFree(buffer);
             break;
 #endif
     }
@@ -919,7 +916,7 @@ free_buffer (void * buffer, enum accel_type type)
 int
 init_accel (void)
 {
-#if defined(_ENABLE_OPENACC_) || defined(_ENABLE_CUDA_) || defined(_ENABLE_HSA_)
+#if defined(_ENABLE_OPENACC_) || defined(_ENABLE_CUDA_) || defined(_ENABLE_ROCM_)
      char * str;
      int local_rank, dev_count;
      int dev_id = 0;
@@ -927,10 +924,6 @@ init_accel (void)
 #ifdef _ENABLE_CUDA_
     CUresult curesult = CUDA_SUCCESS;
     CUdevice cuDevice;
-#endif
-#ifdef _ENABLE_HSA_
-                atmi_status_t err;
-                atmi_machine_t *machine;
 #endif
     switch (options.accel) {
 #ifdef _ENABLE_CUDA_
@@ -969,21 +962,18 @@ init_accel (void)
             acc_set_device_num (dev_id, acc_device_not_host);
             break;
 #endif   
-#ifdef _ENABLE_HSA_
-        case hsa:
+#ifdef _ENABLE_ROCM_
+        case rocm:
             if ((str = getenv("LOCAL_RANK")) != NULL) {
+		hipGetDeviceCount(&dev_count);
                 local_rank = atoi(str);
-            }  {
-                err= atmi_init(ATMI_DEVTYPE_ALL);
-                machine = atmi_machine_get_info();
-                dev_count =  machine->device_count_by_type[ATMI_DEVTYPE_GPU];
                 dev_id = local_rank % dev_count;
-                gpu_.node_id=0; gpu_.dev_type=ATMI_DEVTYPE_GPU; gpu_.dev_id=dev_id; gpu_.mem_id=0;
+
                }
             break;
 #endif
         default:
-            fprintf(stderr, "Invalid device type, should be cuda, openacc or hsa\n");
+            fprintf(stderr, "Invalid device type, should be cuda, openacc or rocm\n");
             return 1;
     }
 
@@ -1013,13 +1003,13 @@ cleanup_accel (void)
             acc_shutdown(acc_device_nvidia);
             break;
 #endif
-#ifdef _ENABLE_HSA_
-        case hsa:
-            atmi_finalize();
+#ifdef _ENABLE_ROCM_
+        case rocm:
+            //atmi_finalize();
             break;
 #endif
         default:
-            fprintf(stderr, "Invalid accel type, should be cuda, openacc or hsa\n");
+            fprintf(stderr, "Invalid accel type, should be cuda, openacc or rocm\n");
             return 1;
     }
 

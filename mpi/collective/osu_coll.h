@@ -24,8 +24,9 @@
 #include "cuda_runtime.h"
 #endif
 
-#ifdef _ENABLE_HSA_
-#include "atmi_runtime.h"
+#ifdef _ENABLE_ROCM_
+#define  __HIP_PLATFORM_HCC__
+#include "hip/hip_runtime.h"
 #endif
 
 
@@ -60,10 +61,10 @@
 #   define CUDA_ENABLED 0
 #endif
 
-#ifdef _ENABLE_HSA_
-#   define HSA_ENABLED 1
+#ifdef _ENABLE_ROCM_
+#   define ROCM_ENABLED 1
 #else
-#   define HSA_ENABLED 0
+#   define ROCM_ENABLED 0
 #endif
 
 #ifdef _ENABLE_CUDA_KERNEL_
@@ -231,7 +232,7 @@ static int process_args (int argc, char *argv[], int rank, int * size,
 enum po_ret_type {
     po_cuda_not_avail,
     po_openacc_not_avail,
-    po_hsa_not_avail,
+    po_rocm_not_avail,
     po_bad_usage,
     po_help_message,
     po_version_message,
@@ -243,7 +244,7 @@ enum accel_type {
     cuda,
     openacc,
     managed,
-    hsa
+    rocm
 };
 
 enum target_type {

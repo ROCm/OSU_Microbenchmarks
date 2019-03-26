@@ -27,16 +27,17 @@
 #include <openacc.h>
 #endif
 
-#ifdef _ENABLE_HSA_
-#include "atmi_runtime.h"
+#ifdef _ENABLE_ROCM_
+#define  __HIP_PLATFORM_HCC__
+#include "hip/hip_runtime.h"
 #endif
 
 
 
 #ifdef PACKAGE_VERSION
-#   define HEADER "# " BENCHMARK " v" PACKAGE_VERSION "\n"
+#    define HEADER "# " BENCHMARK " v" PACKAGE_VERSION "\n"
 #else
-#   define HEADER "# " BENCHMARK "\n"
+#    define HEADER "# " BENCHMARK "\n"
 #endif
 
 #ifndef FIELD_WIDTH
@@ -49,11 +50,11 @@
 
 #define MAX_REQ_NUM 1000
 
-#define MAX_MSG_SIZE (1<<22)
+#define MAX_MSG_SIZE (1<<28)
 #define MYBUFSIZE (MAX_MSG_SIZE)
 
 #define WINDOW_SIZE_LARGE  64
-#define LARGE_MESSAGE_SIZE  8192
+#define LARGE_MESSAGE_SIZE  (1<<25)
 
 #ifdef _ENABLE_OPENACC_
 #   define OPENACC_ENABLED 1
@@ -67,10 +68,10 @@
 #   define CUDA_ENABLED 0
 #endif
 
-#ifdef _ENABLE_HSA_
-#   define HSA_ENABLED 1
+#ifdef _ENABLE_ROCM_
+#   define ROCM_ENABLED 1
 #else
-#   define HSA_ENABLED 0
+#   define ROCM_ENABLED 0
 #endif
 
 
@@ -105,7 +106,7 @@ extern CUcontext cuContext;
 enum po_ret_type {
     po_cuda_not_avail,
     po_openacc_not_avail,
-    po_hsa_not_avail,
+    po_rocm_not_avail,
     po_bad_usage,
     po_help_message,
     po_okay,
@@ -115,12 +116,14 @@ enum accel_type {
     none,
     cuda,
     openacc,
-    hsa
+    rocm
 };
 
 struct options_t {
     char src;
     char dst;
+    int srcgid;
+    int dstgid;
     enum accel_type accel;
     int loop;
     int loop_large;

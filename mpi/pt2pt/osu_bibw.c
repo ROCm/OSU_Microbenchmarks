@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
 
     switch (po_ret) {
         case po_cuda_not_avail:
+        case po_rocm_not_avail:
         case po_openacc_not_avail:
         case po_bad_usage:
             MPI_Finalize();

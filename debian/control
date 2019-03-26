@@ -1,0 +1,13 @@
+Source: osu-micro-benchmarks
+Section: libs
+Priority: extra
+Maintainer: <wenkai.du@amd.com>
+Build-Depends: debhelper (>=9), dh-autoreconf, ucx (>=1.4.0), openmpi (>=3.1.2)
+Standards-Version: 3.9.6
+Homepage: http://mvapich.cse.ohio-state.edu/benchmarks/
+
+Package: osu-micro-benchmarks
+Architecture: any
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}, ucx (>=1.4.0), openmpi (>=3.1.2)
+Description: ROCm porting of OSU Micro-Benchmarks
